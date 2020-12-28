@@ -9,6 +9,16 @@
 zypper help
 ```
 
+## Usage
+
+```sh
+#
+zypper refresh
+
+#
+zypper rm -uy [package]
+```
+
 ## Tips
 
 ### Repository
@@ -21,7 +31,9 @@ ls /etc/zypp/repos.d
 
 ### PID lock
 
-> System management is locked by the application with pid 000000 (zypper).
+```log
+System management is locked by the application with pid 000000 (zypper).
+```
 
 ```sh
 sudo kill -KILL [PID]

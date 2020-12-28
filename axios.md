@@ -6,20 +6,20 @@
 
 ## Installation
 
-```sh
-mkdir example-axios && cd "$_"
-npm init -y
-```
+### NPM
 
 ```sh
-npm i axios -D
+#
+mkdir example-axios && cd "$_"
+npm init -y
+
+npm install axios -D
+
+#
+npm install axios -g
 ```
 
 ## REPL
-
-```sh
-node
-```
 
 ```js
 .editor
@@ -31,5 +31,6 @@ axios.get('https://google.com')
   .catch(error => console.log(error));
 
 // hit ^D
+
 .exit
 ```

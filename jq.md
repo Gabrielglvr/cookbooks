@@ -20,8 +20,9 @@ sudo apt -y install jq
 #### YUM
 
 ```sh
-sudo yum check-update
-sudo yum -y install epel-release
+yum check-update
+
+# Repo: EPEL
 sudo yum -y install jq
 ```
 
@@ -38,22 +39,27 @@ sudo zypper install -y jq
 choco install -y jq
 ```
 
-### Examples
+#### RPM
 
-#### Single line
+- [RPM resource jq(x86-64)](https://rpmfind.net/linux/rpm2html/search.php?query=jq(x86-64))
 
 ```sh
-jq '.example.email |= "johndoe@example.com"' [filename] | sponge [filename]
+curl -LO https://rpmfind.net/linux/opensuse/tumbleweed/repo/oss/x86_64/libjq1-1.6-2.4.x86_64.rpm
+sudo rpm -vi libjq1-1.6-2.4.x86_64.rpm && rm -f libjq1-1.6-2.4.x86_64.rpm
+
+curl -LO https://rpmfind.net/linux/opensuse/tumbleweed/repo/oss/x86_64/jq-1.6-2.4.x86_64.rpm
+sudo rpm -vi jq-1.6-2.4.x86_64.rpm && rm -f jq-1.6-2.4.x86_64.rpm
 ```
 
-#### Multiple lines
+### Usage
 
 ```sh
-jq '.example.name |= "John Doe"' jq '.example.email |= "johndoe@example.com"' [filename] | sponge [filename]
-```
+# Single line
+jq '.example.email |= "jdoe@example.com"' [filename] | sponge [filename]
 
-#### Remove
+# Multiple lines
+jq '.example.name |= "John Doe"' jq '.example.email |= "jdoe@example.com"' [filename] | sponge [filename]
 
-```sh
+# Remove
 jq 'del(.example.name, .example.email)' [filename] | sponge [filename]
 ```

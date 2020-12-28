@@ -1,44 +1,47 @@
 # Puppet
 
-## Installation
+## CLI
 
-### Homebrew
+### Installation
+
+#### Homebrew
 
 ```sh
 brew tap puppetlabs/puppet
 brew cask install puppet-agent puppet-bolt pdk
 ```
 
-### APT
+#### APT
 
 ```sh
 sudo apt update
 sudo apt -y install puppet
 ```
 
-### YUM
+#### YUM
 
 ```sh
-sudo yum check-update
-sudo yum -y install epel-release
+yum check-update
+
+# Repo: EPEL
 sudo yum -y install puppet
 ```
 
-## Service
+### Service
 
-### Linux
+#### Linux
 
 ```sh
 sudo systemctl enable --now puppet
 ```
 
-## Commands
+### Commands
 
 ```sh
 puppet help
 ```
 
-### Agent
+#### Agent
 
 ```sh
 # enable
@@ -48,19 +51,19 @@ puppet agent --enable
 puppet agent --disable
 
 # status
-cat $(puppet config print vardir)/state/agent_disabled.lock
+cat "$(puppet config print vardir)/state/agent_disabled.lock"
 ```
 
-## Issues
+### Issues
 
-### Locale
+#### Locale
 
 ```sh
-env LC_ALL=en_US.UTF-8 \
+LC_ALL=en_US.UTF-8 \
   puppet help
 ```
 
-### Stopping
+#### Stopping
 
 ```sh
 sudo systemctl status puppet
@@ -74,5 +77,5 @@ sudo chkconfig puppet off
 
 ```sh
 sudo crontab -l
-sudo crontab -l | sed '/puppet agent/s/^\(.*\)$/# \1/g' | sudo crontab -
+sudo crontab -l | sed '/puppet agent/ s/^\(.*\)$/# \1/g' | sudo crontab -
 ```

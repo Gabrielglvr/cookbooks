@@ -1,15 +1,24 @@
 # which
 
-## Installation
+## CLI
 
-### YUM
+### Installation
+
+#### YUM
 
 ```sh
-sudo yum check-update
+yum check-update
 sudo yum -y install which
 ```
 
-## Command
+<!-- #### Zypper
+
+```sh
+sudo zypper refresh
+sudo zypper install -y which
+``` -->
+
+### Command
 
 ```sh
 which [command]

@@ -1,20 +1,18 @@
 # Paste
 
-## Installation
+## App
 
-### Homebrew
+### Installation
 
-```sh
-brew cask install paste
-```
-
-### MAS
+#### MAS
 
 ```sh
 mas install 967805235
 ```
 
-## Shortcuts
+### Tips
+
+#### Shortcuts
 
 - `⌘` Command
 - `⇧` Shift

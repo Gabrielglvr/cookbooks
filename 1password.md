@@ -1,15 +1,21 @@
 # 1Password
 
-## Installation
+## App
 
-### Homebrew
+### Installation
+
+#### Homebrew
 
 ```sh
 brew cask install 1password
 ```
 
-### Chocolatey
+#### APT
+
+TODO
+
+#### Chocolatey
 
 ```sh
-choco install -y 1password
+choco install -yf -not-silent 1password
 ```

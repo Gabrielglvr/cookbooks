@@ -1,14 +1,22 @@
 # VLC
 
-## Installation
+## App
 
-### Homebrew
+### Installation
+
+#### Homebrew
 
 ```sh
 brew cask install vlc
 ```
 
-### Chocolatey
+<!-- #### Zypper
+
+```sh
+sudo zypper --non-interactive install vlc
+``` -->
+
+#### Chocolatey
 
 ```sh
 choco install -y vlc

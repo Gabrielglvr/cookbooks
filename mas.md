@@ -1,15 +1,27 @@
-# mas
+# Mac App Store (mas)
 
-## Installation
+## CLI
 
-### Homebrew
+### Installation
+
+#### Homebrew
 
 ```sh
 brew install mas
 ```
 
-## Commands
+### Commands
 
 ```sh
 mas help
+```
+
+### Usage
+
+```sh
+# List
+mas list
+
+# Current User
+mas account
 ```

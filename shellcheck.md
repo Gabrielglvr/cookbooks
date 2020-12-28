@@ -1,9 +1,21 @@
 # ShellCheck
 
-## Installation
+**Keywords**: Shell linter
 
-### Homebrew
+## CLI
+
+### Installation
+
+#### Homebrew
 
 ```sh
 brew install shellcheck
+```
+
+## Editor
+
+### Visual Studio Code
+
+```sh
+code --install-extension timonwong.shellcheck
 ```

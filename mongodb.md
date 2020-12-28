@@ -1,85 +1,209 @@
 # MongoDB
 
-## Docker
+<!--
+https://www.linkedin.com/learning/learning-mongodb/modern-database-and-application-design-with-mongodb
+-->
 
-### Volume
+## References
+
+- [MongoDB ObjectId ↔ Timestamp Converter](https://steveridout.github.io/mongo-object-time/)
+
+## Helm
+
+### References
+
+- [Exposing TCP and UDP services](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/exposing-tcp-udp-services.md)
+
+### Install
 
 ```sh
-docker volume create mongo-data
+kubectl create namespace mongodb
+```
+
+```sh
+helm install stable/mongodb \
+  -n mongodb \
+  --namespace mongodb \
+  --set ingress.enabled=true \
+  --set ingress.hosts={mongodb.example.com}
+```
+
+### Secrets
+
+```sh
+kubectl get secret mongodb \
+  -o jsonpath='{.data.mongodb-root-password}' \
+  -n mongodb | \
+    base64 --decode; echo
+```
+
+### NGINX Ingress
+
+```sh
+helm upgrade nginx-ingress stable/nginx-ingress -f <(yq w <(helm get values nginx-ingress) tcp.27017 mongodb/mongodb:27017)
+```
+
+### Delete
+
+```sh
+helm delete mongodb --purge
+kubectl delete namespace mongodb --grace-period=0 --force
+```
+
+<!-- ```sh
+helm get values nginx-ingress > ./current-values.yaml
+```
+
+Adjust `^tcp: ` value:
+
+```sh
+vim ./current-values.yaml
+```
+
+```sh
+helm upgrade nginx-ingress stable/nginx-ingress -f ./current-values.yaml
+```
+
+```sh
+rm ./current-values.yaml
+``` -->
+
+## Docker
+
+### Network
+
+```sh
+docker network create workbench \
+  --subnet 10.1.1.0/24
 ```
 
 ### Running
 
 ```sh
 docker run -d \
-  -h mongo \
-  -v mongo-data:/data/db \
-  -e MONGO_INITDB_ROOT_USERNAME=root \
-  -e MONGO_INITDB_ROOT_PASSWORD=root \
+  $(echo "$DOCKER_RUN_OPTS") \
+  -h mongodb \
+  -v mongodb-data:/data/db \
+  -v mongodb-configdb:/data/configdb \
+  -e MONGO_INITDB_ROOT_USERNAME='user' \
+  -e MONGO_INITDB_ROOT_PASSWORD='pass' \
   -p 27017:27017 \
-  --name mongo \
-  --restart always \
-  mongo:4.0
+  --name mongodb \
+  --network workbench \
+  docker.io/library/mongo:4.0.20
+```
+
+```sh
+sudo hostess add mongodb 127.0.0.1
 ```
 
 ### Client
 
 ```sh
-docker run -it --rm mongo:4.0 mongo -h
+docker run -it --rm \
+  docker.io/library/mongo:4.0.20 mongo -h
 ```
 
 ### Remove
 
 ```sh
-docker rm -f mongo
-docker volume rm mongo-data
+docker rm -f mongodb
+
+docker volume rm mongodb-data mongodb-configdb
 ```
 
-## Installation
+## Docker Compose
 
-### Homebrew
+### Manifest
+
+```yaml
+version: '3.7'
+
+services:
+  mongodb:
+    image: docker.io/library/mongo:4.0.20
+    container_name: mongodb
+    hostname: mongodb
+    volumes:
+      - type: volume
+        source: mongodb-data
+        target: /data/db
+      - type: volume
+        source: mongodb-configdb
+        target: /data/configdb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: pass
+    ports:
+      - target: 27017
+        published: 27017
+        protocol: tcp
+    networks:
+      - workbench
+    restart: always
+
+volumes:
+  mongodb-data:
+    driver: local
+  mongodb-configdb:
+    driver: local
+
+networks:
+  workbench:
+    name: workbench
+    external: true
+```
+
+## CLI
+
+### Installation
+
+#### Homebrew
 
 ```sh
-brew tap mongodb/brew
-brew install mongodb-community
+brew install mongodb/brew/mongodb-community
 ```
 
-## Service
+### Service
 
-### Homebrew
+#### Homebrew
 
 ```sh
 brew services start mongodb-community
 ```
 
-## Commands
+### Commands
 
 ```sh
 mongo -h
 ```
 
-## Examples
-
-### Database Authentication
+### Usage
 
 ```sh
+# Database Authentication
 mongo \
   --host [hostname] \
   --port 27017 \
   -u [username] \
   -p [password] \
   --authenticationDatabase [db-name]
-```
 
-## Evaluate
+#
+mongo topic --eval 'rs.status()'
 
-```sh
+# mongo topic \
+#   -u root \
+#   -p root \
+#   --eval 'db.createCollection("news")'
+
+# Evaluate
 mongo --eval 'printjson(db.serverStatus())'
-```
 
-## Heredoc
+#
+mongo admin --eval "db.shutdownServer()"
 
-```sh
+# Heredoc
 mongo [db-name] <<-EOSQL
 [commands]
 EOSQL

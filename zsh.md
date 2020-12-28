@@ -1,49 +1,89 @@
 # Z shell (Zsh)
 
-## Installation
+## References
 
-### Homebrew
+- [Startup Files](http://zsh.sourceforge.net/Intro/intro_3.html)
+
+## CLI
+
+### Installation
+
+#### Homebrew
 
 ```sh
 brew install zsh
 ```
 
-### YUM
+#### YUM
 
 ```sh
-sudo yum check-update
+yum check-update
 sudo yum -y install zsh
 ```
 
-### APT
+#### APT
 
 ```sh
 sudo apt update
 sudo apt -y install zsh
 ```
 
-## Configuration
+#### Zypper
+
+```sh
+sudo zypper refresh
+sudo zypper install -y zsh
+```
+
+### Configuration
 
 ```sh
 # for Linux
-sudo chsh $USER -s /bin/zsh
+sudo chsh "$USER" -s /bin/zsh
 
-# for macOS
-sudo chpass -s `which zsh` $USER
+# for Darwin
+sudo chpass -s `which zsh` "$USER"
 ```
 
 ```sh
-sudo su - $USER
+sudo su - "$USER"
 ```
 
 ```sh
-echo $SHELL
+echo "$SHELL"
 ```
 
-## Tips
+### Usage
 
-### Reload
+```sh
+# Version
+zsh --version | head -1
+```
+
+### Tips
+
+#### Reload
 
 ```sh
 source ~/.zshrc
+```
+
+### Issues
+
+#### LDAP Authentication
+
+```log
+chsh: user '[username]' does not exist in /etc/passwd
+```
+
+```sh
+# Thought CLI
+ssh [host] -t 'zsh --login'
+
+# Thought SSH Config
+cat << EOF >> ~/.ssh/config
+Host [host]
+  RemoteCommand zsh -l
+  RequestTTY force
+EOF
 ```

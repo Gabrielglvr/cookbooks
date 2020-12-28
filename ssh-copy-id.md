@@ -1,38 +1,45 @@
 # ssh-copy-id
 
-## Installation
+## CLI
 
-### Homebrew
+### Installation
+
+#### Homebrew
 
 ```sh
 brew install ssh-copy-id
 ```
 
-## Examples
-
-### Generate
+#### YUM
 
 ```sh
-ssh-keygen -b 4096 -C '[email]' -f ~/.ssh/id_rsa -q -t rsa -N ''
+yum check-update
+sudo yum -y install openssh-clients
 ```
 
-### Copy id
+### Usage
 
 ```sh
-ssh-copy-id -i ~/.ssh/id_rsa [username]@[hostname]
-```
+# Generate
+ssh-keygen \
+  -b 4096 \
+  -C [email] \
+  -f ~/.ssh/id_rsa \
+  -q \
+  -t rsa \
+  -N ''
 
-### Test
+# Copy id
+ssh-copy-id \
+  -i ~/.ssh/id_rsa \
+  [username]@[hostname]
 
-```sh
+# Test
 ssh \
   -i ~/.ssh/id_rsa \
   [username]@[hostname]
-```
 
-#### Ignore Known Hosts
-
-```sh
+# Ignore Known Hosts
 ssh \
   -i ~/.ssh/id_rsa \
   -o UserKnownHostsFile=/dev/null \
